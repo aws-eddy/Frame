@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Parsers.fs" />
+    <Compile Include="LambdaParser.fs" />
+    <Compile Include="AlphaReduction.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+</Project>
