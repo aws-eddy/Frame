@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <Compile Include="Parsers.fs" />
+    <Compile Include = "FrameInterpreter.fs"/>
+    <Compile Include = "FrameParser.fs"/>
     <Compile Include="Program.fs" />
   </ItemGroup>
 

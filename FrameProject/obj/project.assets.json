@@ -782,28 +782,30 @@
     ]
   },
   "packageFolders": {
-    "/Users/captaincode/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "D:\\Users\\Work\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/FrameProject.fsproj",
+      "projectUniqueName": "D:\\Users\\Work\\school\\ppl_fall_2018\\FrameProject\\FrameProject\\FrameProject.fsproj",
       "projectName": "FrameProject",
-      "projectPath": "/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/FrameProject.fsproj",
-      "packagesPath": "/Users/captaincode/.nuget/packages/",
-      "outputPath": "/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/obj/",
+      "projectPath": "D:\\Users\\Work\\school\\ppl_fall_2018\\FrameProject\\FrameProject\\FrameProject.fsproj",
+      "packagesPath": "D:\\Users\\Work\\.nuget\\packages\\",
+      "outputPath": "D:\\Users\\Work\\school\\ppl_fall_2018\\FrameProject\\FrameProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/captaincode/.nuget/NuGet/NuGet.Config"
+        "D:\\Users\\Work\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
