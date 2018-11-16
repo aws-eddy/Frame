@@ -66,4 +66,4 @@ let rec prettyprint (e:Expr) (i: int) : string=
 let go input =
  match grammar (prepare input) with
  | Success(e,_) -> prettyprint e 0
- | Failure ->  "<strong>Invalid Expression!</strong>"
+ | Failure ->  "Invalid Expression"
