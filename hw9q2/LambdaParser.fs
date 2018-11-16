@@ -46,6 +46,6 @@ let grammar = pleft expr peof
 /// <param name="input">The input string.</param>
 /// <returns>An Expr option value.</returns>
 let parse input : Expr option =
-    match grammar (prepare input) with
-    | Success(e,_) -> Some e
-    | Failure -> None
+ match grammar (prepare input) with
+ | Success(e,_) -> Some e
+ | Failure -> None
