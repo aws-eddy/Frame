@@ -1,0 +1,10 @@
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/bin/Debug/netcoreapp2.1/FrameProject.deps.json
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/bin/Debug/netcoreapp2.1/FrameProject.runtimeconfig.json
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/bin/Debug/netcoreapp2.1/FrameProject.runtimeconfig.dev.json
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/bin/Debug/netcoreapp2.1/FrameProject.dll
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/bin/Debug/netcoreapp2.1/FrameProject.pdb
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/obj/Debug/netcoreapp2.1/FrameProject.fsprojAssemblyReference.cache
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/obj/Debug/netcoreapp2.1/FrameProject.AssemblyInfoInputs.cache
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/obj/Debug/netcoreapp2.1/FrameProject.AssemblyInfo.fs
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/obj/Debug/netcoreapp2.1/FrameProject.dll
+/Users/captaincode/Docs/School/ppl/programming/Frame/FrameProject/obj/Debug/netcoreapp2.1/FrameProject.pdb
