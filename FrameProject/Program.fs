@@ -15,11 +15,9 @@ let main argv =
 
     let content = argv.[0]
 
-    let body = go content
-     
-    if (body <> "Invalid Expression")
-    then buildHTML body |> ignore
-    else printfn "Invalid Expression"
-
+    let body =
+        match go content with
+        | "Invalid Expression" ->"Invalid Expression" , exit 1 
+        | s -> buildHTML s, 0
     0
    
