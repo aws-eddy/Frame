@@ -4,52 +4,24 @@ open Parser
 open FrameInterpreter
 
 type Expr = 
+| ParaText of string
 | HeadText of string
 | Frame of Expr
 //| MFrame of Expr * Expr
 
 let expr, exprImpl = recparser()
 
-// type Frame = 
-// | (TextFrame * int)
-
-// type Cols = int
-
-//for variables
-// type Context = Map<string, Value>
-
-//parses the input to give an abstract syntax tree
-// let parse e =
-//     match e with
-//     | TFrame t ->
-//         match t with 
-//         | HeadText(v) -> pbetween(pstr("HeadText(\""))(pstr(")"))(pstr(v))
-//         | ParaText(v) -> pbetween(pstr("ParaText(\""))(pstr(")"))(pstr(v))
-    // | Frame s -> 
-    //     match s with
-    //     | s ->  Expr    
-
-
-//parses what type of TextFrame we have 
-// let textFrame e = 
-//     match e with 
-//     | HeadText(v) -> "<h1>"+v+"</h1>"
-//     | ParaText(v) -> "<h1>"+v+"</h1>"
-
-// let rec eval e = 
-//     match e with
-//     | TFrame t -> textFrame t
-//     | Frame(v) ->  "<div>" + eval e + "</div>"
-
 let frame = pbetween (pstr "Frame(") (pchar ')') expr |>> (fun (e) -> Frame(e))
 
 let inStr = pmany0 pletter |>> (fun v -> HeadText(stringify v))
+let hstr = pbetween (pchar '"') (pchar '"') inStr
+let hText = pbetween (pstr "HeadText(") (pchar ')') hstr
 
-let str = pbetween (pchar '"') (pchar '"') inStr
+let inStr2 =  pmany0 pletter |>> (fun v -> ParaText(stringify v))
+let str2 = pbetween (pchar '"') (pchar '"') inStr2
+let pText = pbetween (pstr "ParaText(") (pchar ')') str2
 
-let tframe = pbetween (pstr "HeadText(") (pchar ')') str
-
-exprImpl := tframe <|> frame
+exprImpl := hText <|> pText <|> frame
 
 let grammar = pleft expr peof
 
@@ -60,6 +32,7 @@ let rec tab (s: string) (i: int) =
 
 let rec prettyprint (e:Expr) (i: int) : string= 
  match e with
+ | ParaText(s) -> tab "" i + "<p>\n" + tab "" (i+1) + s + "\n" + tab "" i + "</p>\n"
  | HeadText(s) -> tab "" i + "<h1>\n" + tab "" (i+1) + s + "\n" + tab "" i + "</h1>\n"
  | Frame(f) -> tab "" i + "<div>\n" + (prettyprint f (i+1)) + tab "" i + "</div>\n"
 
