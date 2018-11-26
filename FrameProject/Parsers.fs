@@ -43,7 +43,7 @@ let is_digit(c: char) = is_regexp (c.ToString()) @"[0-9]"
 let is_bracket c = 
  match c with 
  | '<' -> false
- | _ -> is_letter c || is_whitespace c || is_digit c
+ | _ -> is_letter c || is_whitespace c || is_digit c 
 
 let presult(a: 'a)(i: Input) : Outcome<'a> = Success(a,i)
 
