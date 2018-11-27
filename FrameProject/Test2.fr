@@ -1,1 +1,1 @@
-Frame(Frame(HeadText("One")),Frame(HeadText("Two")),Frame(HeadText("Three")))
+Frame(Frame(HeadText("One")), Frame(HeadText("Two")), Frame(HeadText("Three")))
