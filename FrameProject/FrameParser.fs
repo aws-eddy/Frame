@@ -23,8 +23,6 @@ type Context = Map<string, Value>
 
 let expr, exprImpl = recparser()
 
-let frame = pbetween (pstr "Frame(") (pchar ')') expr |>> (fun (e) -> Frame(e))
-
 let inStr c=
  match c with 
  | "p" -> pmany0 pstring  |>> (fun v -> ParaText(stringify v))
@@ -32,13 +30,13 @@ let inStr c=
  | "li" -> pmany0 pstring |>> (fun v -> ListText(stringify v))
  | _ -> failwith "Type not defined!"
 
+let frame = pbetween (pstr "Frame(") (pchar ')') expr |>> (fun (e) -> Frame(e))
 let betweenq (s:string) = pbetween (pchar '"') (pchar '"') (inStr s)
 let hText = pbetween (pstr "HeadText(") (pchar ')') (betweenq "h")
 let pText = pbetween (pstr "ParaText(") (pchar ')') (betweenq "p")
 let liText = pbetween (pstr "ListText(") (pchar ')') (betweenq "li")
 let ws = pright pws1 expr
-
-let foff = pseq (pbetween (pstr "Frame(") (pstr "),") expr) expr (fun (e1, e2) -> FofF(Frame(e1),e2))
+let foff = pseq (pleft (hText <|> pText <|> liText <|> frame) (pchar ',')) expr (fun (e1, e2) -> FofF(e1,e2))
 
 exprImpl := ws <|> foff <|> hText <|> pText <|> liText <|> frame
 
