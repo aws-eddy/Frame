@@ -1,1 +1,1 @@
-Frame(HeadText("include white space coño"))
+Frame(Frame(HeadText("include white space cono")))

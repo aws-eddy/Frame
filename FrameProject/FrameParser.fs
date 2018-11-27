@@ -10,6 +10,7 @@ type Expr =
 | Variable of string
 | AssignOp of string * Expr
 | Frame of Expr
+| FofF of Expr * Expr
 
 
 type Value =
@@ -19,8 +20,6 @@ type Value =
 | ValueFrame of Expr
 
 type Context = Map<string, Value>
-
-//| MFrame of Expr * Expr
 
 let expr, exprImpl = recparser()
 
@@ -38,32 +37,9 @@ let hText = pbetween (pstr "HeadText(") (pchar ')') (betweenq "h")
 let pText = pbetween (pstr "ParaText(") (pchar ')') (betweenq "p")
 let liText = pbetween (pstr "ListText(") (pchar ')') (betweenq "li")
 
+let foff = pseq (pbetween (pstr "Frame(") (pstr "),") expr) expr (fun (e1, e2) -> FofF(Frame(e1),e2))
 
-
-// let rec eval e ctx : Expr*Context = 
-//     match e with 
-//     | Variable v -> 
-//         match ctx.[v] with
-//         | ValueParaText s -> ParaText s, ctx
-//         | ValueHeadText s -> HeadText s,  ctx
-//         | ValueListText s  -> ListText s, ctx
-//         | ValueFrame e ->  Frame e, ctx
-//     | AssignOp (s, e') ->
-//         let (e'', ctx1) = eval e' ctx
-//         match e'' with
-//         | HeadText h -> 
-//             let ctx1 = Map.add h (HeadText h) ctx
-//             e'', ctx1
-//         |ParaText p ->
-//             let ctx1 = Map.add p (ParaText p) ctx
-//             e'', ctx1
-//         |ListText li ->
-//             let ctx1 = Map.add li (ListText li) ctx
-//             e'', ctx1             
-
-
-
-exprImpl := hText <|> pText <|> liText <|> frame
+exprImpl := foff <|> hText <|> pText <|> liText <|> frame
 
 let grammar = pleft expr peof
 
@@ -79,7 +55,8 @@ let rec prettyprint (e:Expr) (i: int) : string=
  | ParaText(s) -> wrap (s,"p") i
  | HeadText(s) -> wrap (s,"h1") i
  | ListText(s) -> wrap (s,"li") i
- | Frame(f) -> tab "" i + "<div>\n" + (prettyprint f (i+1)) + tab "" i + "</div>"
+ | Frame(f) -> tab "" i + "<div>\n" + (prettyprint f (i+1)) + tab "" i + "</div>\n"
+ | FofF(e1, e2) -> (prettyprint e1 i) +  (prettyprint e2 i)
  | _ -> failwith "Error: Not printable."
 
 let go input =
