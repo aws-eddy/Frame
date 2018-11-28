@@ -8,18 +8,15 @@ type Expr =
 | HeadText of string
 | ListText of string
 | Variable of string
-| AssignOp of string * Expr
 | Frame of Expr
 | FofF of Expr * Expr
 
 
 type Value =
-| ValueHeadText of string
-| ValueParaText of string
-| ValueListText of string
+| ValueText of string
 | ValueFrame of Expr
 
-type Context = Map<string, Value>
+type Context = Map<string, Expr>
 
 let expr, exprImpl = recparser()
 
@@ -30,11 +27,11 @@ let inStr c=
  | "li" -> pmany0 pstring |>> (fun v -> ListText(stringify v))
  | _ -> failwith "Type not defined!"
 
-let frame = pbetween (pstr "Frame(") (pchar ')') expr |>> (fun (e) -> Frame(e))
+let frame = pbetween ((pstr "Frame(") <|> (pstr "fr(")) (pchar ')') expr |>> (fun (e) -> Frame(e))
 let betweenq (s:string) = pbetween (pchar '"') (pchar '"') (inStr s)
-let hText = pbetween (pstr "HeadText(") (pchar ')') (betweenq "h")
-let pText = pbetween (pstr "ParaText(") (pchar ')') (betweenq "p")
-let liText = pbetween (pstr "ListText(") (pchar ')') (betweenq "li")
+let hText = pbetween ((pstr "HeadText(") <|> (pstr "ht(")) (pchar ')') (betweenq "h")
+let pText = pbetween ((pstr "ParaText(") <|> (pstr "pt(")) (pchar ')') (betweenq "p")
+let liText = pbetween ((pstr "ListText(") <|> (pstr "lst(")) (pchar ')') (betweenq "li")
 let ws = pright pws1 expr
 let foff = pseq (pleft (hText <|> pText <|> liText <|> frame) (pchar ',')) expr (fun (e1, e2) -> FofF(e1,e2))
 
