@@ -1,1 +1,1 @@
-fr(fr(ht("One"), fr(ht("One point five"))), fr(ht("Two")), ht("Three"))
+nav(link("Test"))

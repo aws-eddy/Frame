@@ -15,10 +15,12 @@ let main argv =
 
     let content = File.ReadAllText (argv.[0])
     let body = go content
- 
-    if (body <> "Invalid Expression")
-    then buildHTML body |> ignore
-    else printfn "Invalid Expression"
+    let success = "Success! check frame.html"
 
+    if (body <> "Invalid Expression")
+    then buildHTML body |> ignore 
+    printfn "%s" success
+    if body = "Invalid Expression"
+    then printfn "Invalid Expression"
     0
    

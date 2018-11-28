@@ -1,0 +1,1 @@
+fr(ht("This is an important piece of text"), pt("This is not so important"))
