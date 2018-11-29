@@ -8,6 +8,7 @@ type Expr =
 | HeadText of string
 | ListText of string
 | LinkText of string
+| Button of string
 | NavFrame of Expr
 | Variable of string
 | Frame of Expr
@@ -21,6 +22,7 @@ type Value =
 type Context = Map<string, Expr>
 
 let expr, exprImpl = recparser()
+let value, valueImpl = recparser()
 
 let inStr c=
  match c with 
@@ -28,7 +30,8 @@ let inStr c=
  | "h" -> pmany0 pstring  |>> (fun v -> HeadText(stringify v))
  | "li" -> pmany0 pstring |>> (fun v -> ListText(stringify v))
  | "link" -> pmany0 pstring |>> (fun v -> LinkText(stringify v))
- | _ -> failwith "Type not defined!"
+ | "button" -> pmany0 pstring |>> (fun v -> Button(stringify v))
+ | _ -> failwith "Type not defined!"    
 
 // Assigning variables
 let plet = pstr "let "
@@ -37,10 +40,16 @@ let pvar = pseq pletter alphanum (fun(c, cl) -> (string c)+(stringify cl))
 let vprefix = pright plet pvar
 let vsuffix = pright (pstr " = ") expr
 
-let assign (name:string,value:Expr ) ctx = 
-  match value with 
-  | HeadText(s) -> Map.add name value ctx
-  | _ -> failwith "Cannot assign variable: invald expression"
+let valuetext = 
+
+let valueFrame
+
+let value = valuetext <|> valueframe
+
+// let assign (name:string,value:Expr ) ctx = 
+//   match value with 
+//   | HeadText(s) -> Map.add name value ctx
+//   | _ -> failwith "Cannot assign variable: invald expression"
 
 //*
 //let variable : Input -> Map<string,Expr> = pseq vprefix vsuffix (fun (name,v) -> Map.add(name,v))
@@ -57,10 +66,14 @@ let liText = pbetween ((pstr "ListText(") <|> (pstr "lst(")) (pchar ')') (betwee
 
 let linkText = pbetween((pstr "LinkText(") <|> (pstr "link(")) (pchar ')') (betweenq "link")
 
+let parseBtn = pbetween (pstr "Button(") (pchar ')') (betweenq "button")
+
+// let button  = pbetween ((pstr "Button(")<|> (pstr("btn")) (pchar ')') parseBtn
+
 let ws = pright pws1 expr
 let foff = pseq (pleft (hText <|> pText <|> liText <|> frame) (pchar ',')) expr (fun (e1, e2) -> FofF(e1,e2))
 
-exprImpl := ws <|> foff <|> hText <|> pText <|> liText <|> linkText <|> frame <|> nav
+exprImpl := ws <|> foff <|> hText <|> pText <|> liText <|> linkText <|> frame <|> nav <|> parseBtn
 
 let grammar = pleft expr peof
 
@@ -77,6 +90,7 @@ let rec prettyprint (e:Expr) (i: int) : string=
  | ParaText(s) -> wrap (s,"p") i
  | HeadText(s) -> wrap (s,"h1") i
  | ListText(s) -> wrap (s,"li") i
+ | Button (s) -> wrap (s, "button") i
  | LinkText(s) -> link (s,"li") i
  | NavFrame (f) -> tab "" i + "<nav>\n" + (prettyprint f (i+1)) + tab "" i + "</nav>\n"
  | Frame(f) -> tab "" i + "<div>\n" + (prettyprint f (i+1)) + tab "" i + "</div>\n"
