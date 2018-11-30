@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Parsers.fs" />
-    <Compile Include = "FrameInterpreter.fs"/>
+    <Compile Include = "Parsers.fs" />
     <Compile Include = "FrameParser.fs"/>
-    <Compile Include="Program.fs"/>
+    <Compile Include = "FrameInterpreter.fs"/>
+    <Compile Include = "Program.fs"/>
   </ItemGroup>
 
 </Project>

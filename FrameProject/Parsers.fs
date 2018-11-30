@@ -30,15 +30,21 @@ let recparser() =
 let is_regexp(s: string)(rgx: string) =
     Regex.Match(s, rgx).Success
 
-let is_whitespace(c: char) = is_regexp (c.ToString()) @"\s"
 
 let is_upper(c: char) = is_regexp (c.ToString()) @"[A-Z]"
 
 let is_lower(c: char) = is_regexp (c.ToString()) @"[a-z]"
 
+let is_tag (c:char) = is_regexp (c.ToString()) @"[h p]"
 let is_letter(c: char) = is_upper c || is_lower c
-
+let is_whitespace(c: char) = is_regexp (c.ToString()) @"\s" 
 let is_digit(c: char) = is_regexp (c.ToString()) @"[0-9]"
+
+
+let is_bracket c = 
+ match c with 
+ | '<' -> false
+ | _ -> is_letter c || is_whitespace c || is_digit c 
 
 let presult(a: 'a)(i: Input) : Outcome<'a> = Success(a,i)
 
@@ -70,6 +76,25 @@ let psat(f: char -> bool) : Parser<char> =
 let pchar(c: char) : Parser<char> = psat (fun c' -> c' = c)
 
 let pletter : Parser<char> = psat is_letter
+let ptag: Parser<char> = psat is_tag
+
+let rec pmany0(p: Parser<'a>)(i: Input) : Outcome<'a list> =
+    let rec pm0(xs: 'a list)(i: Input) : Outcome<'a list> =
+        match p i with
+        | Failure        -> Success(xs, i)
+        | Success(a, i') ->
+            if i = i' then
+                failwith "pmany parser loops infinitely!"
+            pm0 (a::xs) i'
+    match pm0 [] i with
+    | Success(xs,i') -> Success(List.rev xs, i')
+    | Failure        -> Failure
+
+
+let psolo(p: Parser<'a>) : Parser<'a list> =
+    pseq p (pmany0 p) (fun (x,xs) -> x :: []])
+
+let pstring : Parser<char> = psat is_bracket
 
 let pdigit : Parser<char> = psat is_digit
 
@@ -94,17 +119,6 @@ let (|>>)(p: Parser<'a>)(f: 'a -> 'b) : Parser<'b> = pfun p f
 let pfresult(p: Parser<'a>)(x: 'b) : Parser<'b> =
     pbind p (fun a -> presult x)
 
-let rec pmany0(p: Parser<'a>)(i: Input) : Outcome<'a list> =
-    let rec pm0(xs: 'a list)(i: Input) : Outcome<'a list> =
-        match p i with
-        | Failure        -> Success(xs, i)
-        | Success(a, i') ->
-            if i = i' then
-                failwith "pmany parser loops infinitely!"
-            pm0 (a::xs) i'
-    match pm0 [] i with
-    | Success(xs,i') -> Success(List.rev xs, i')
-    | Failure        -> Failure
 
 let pmany1(p: Parser<'a>) : Parser<'a list> =
     pseq p (pmany0 p) (fun (x,xs) -> x :: xs)
