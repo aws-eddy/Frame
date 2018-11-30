@@ -92,7 +92,7 @@ let rec pmany0(p: Parser<'a>)(i: Input) : Outcome<'a list> =
 
 
 let psolo(p: Parser<'a>) : Parser<'a list> =
-    pseq p (pmany0 p) (fun (x,xs) -> x :: []])
+    pseq p (pmany0 p) (fun (x,xs) -> x :: [])
 
 let pstring : Parser<char> = psat is_bracket
 

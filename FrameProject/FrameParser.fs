@@ -22,7 +22,6 @@ let ctx = Map.empty<string, Expr>
 
 let expr, exprImpl = recparser()
 
-
 let inStr c=
  match c with 
  | "p" -> pmany0 pstring  |>> ( fun v -> ParaText(stringify v))
@@ -43,27 +42,27 @@ let value = pseq vprefix vsuffix (fun (vbl,e) -> AssignOp(vbl, e))
 
 //handling a list of text Syntax: lst("h1", "str1", str2, ..., "str n") => <h1>str1</h1><h1>str2</h1> etc...
 let betweenq (s:string) = pbetween (pchar '"') (pchar '"') (inStr s)
-let makeAST s = 
-    match s with 
-    | "h1" -> HeadText(s)
-    | _ -> failwith "Error: invalid tag specified in list construct"
-let isTag  =  pseq ptag (psolo pdigit) (fun (a,b) -> makeAST (a.ToString() + (stringify b))) 
-let extractTag = pseq (pchar '"') (pchar ',') (fun (tag, list) -> isTag 
-let listText = pbetween ((pstr "ListText(") <|> (pstr "lst(")) (pchar ')') extractTag
+// let makeAST s = 
+//     match s with 
+//     | "h1" -> HeadText(s)
+//     | _ -> failwith "Error: invalid tag specified in list construct"
+// let isTag  =  pseq ptag (psolo pdigit) (fun (a,b) -> makeAST (a.ToString() + (stringify b))) 
+// let extractTag = pseq (pchar '"') (pchar ',') (fun (tag, list) -> isTag 
+// let listText = pbetween ((pstr "ListText(") <|> (pstr "lst(")) (pchar ')') extractTag
 let frame = pbetween ((pstr "Frame(") <|> (pstr "fr(")) (pchar ')') expr |>> (fun (e) -> Frame(e))
 let nav = pbetween ((pstr "NavFrame(") <|> (pstr "nav(")) (pchar ')') expr |>> (fun (e) -> NavFrame(e))
 let olText = pbetween ((pstr "OrderedText(") <|> (pstr "ol(")) (pchar ')') expr |>> (fun (e) -> OrderedList(e))
 let ulText = pbetween ((pstr "UnorderedText(") <|> (pstr "ul(")) (pchar ')') expr |>> (fun (e) -> UnorderedList(e))
 let hText = pbetween ((pstr "HeadText(") <|> (pstr "ht(")) (pchar ')') (betweenq "h")
 let pText = pbetween ((pstr "ParaText(") <|> (pstr "pt(")) (pchar ')') (betweenq "p")
-let liText = pbetween ((pstr "ListItem(") <|> (pstr "li(")) (pchar ')') (betweenq "li")
+let liText = pbetween ((pstr "ListItem(") <|> (pstr "lst(")) (pchar ')') (betweenq "li")
 let linkText = pbetween((pstr "LinkText(") <|> (pstr "link(")) (pchar ')') (betweenq "link")
 let parseBtn = pbetween (pstr "Button(") (pchar ')') (betweenq "button")
 
 let ws = pright pws1 expr
 let foff = pseq (pleft (hText <|> pText <|> liText <|> nav <|> frame) (pchar ',')) expr (fun (e1, e2) -> FofF(e1,e2))
 
-exprImpl := ws <|> foff <|> frame <|> nav <|> listText <|> olText <|> ulText <|> hText <|> pText <|> liText <|> linkText <|> parseBtn
+exprImpl := ws <|> foff <|> frame <|> nav <|>  olText <|> ulText <|> hText <|> pText <|> liText <|> linkText <|> parseBtn
 
 let grammar = pleft expr peof
 
