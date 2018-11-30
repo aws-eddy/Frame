@@ -1,7 +1,8 @@
 module FrameParser
 
 open Parser
-open FrameInterpreter
+
+type Variable = string
 
 type Expr = 
 | ParaText of string
@@ -9,20 +10,20 @@ type Expr =
 | ListText of string
 | LinkText of string
 | Button of string
+| AssignOp of Variable * Expr
 | NavFrame of Expr
-| Variable of string
 | Frame of Expr
 | FofF of Expr * Expr
 
 
-type Value =
-| ValueText of string
-| ValueFrame of Expr
+// type Variable =
+// | ValueText of Expr
+// | ValueFrame of Expr
 
-type Context = Map<string, Expr>
+let ctx = Map.empty<string, Expr>
 
 let expr, exprImpl = recparser()
-let value, valueImpl = recparser()
+// let value, valueImpl = recparser()
 
 let inStr c=
  match c with 
@@ -37,25 +38,16 @@ let inStr c=
 let plet = pstr "let "
 let alphanum = pmany0 (pletter <|> pdigit)
 let pvar = pseq pletter alphanum (fun(c, cl) -> (string c)+(stringify cl))
-let vprefix = pright plet pvar
+let vprefix: Parser<Variable> = pright plet pvar
 let vsuffix = pright (pstr " = ") expr
 
-let valuetext = 
-
-let valueFrame
-
-let value = valuetext <|> valueframe
-
-// let assign (name:string,value:Expr ) ctx = 
-//   match value with 
-//   | HeadText(s) -> Map.add name value ctx
-//   | _ -> failwith "Cannot assign variable: invald expression"
-
-//*
-//let variable : Input -> Map<string,Expr> = pseq vprefix vsuffix (fun (name,v) -> Map.add(name,v))
-//
+let value = pseq vprefix vsuffix (fun (vbl,e) -> AssignOp(vbl, e))
 
 
+ 
+// let valueframe = pseq vprefix vsuffix (fun (str, value) -> Map.add str ( value))
+
+// valueImpl := valuetext <|> valueframe
 
 let frame = pbetween ((pstr "Frame(") <|> (pstr "fr(")) (pchar ')') expr |>> (fun (e) -> Frame(e))
 let nav = pbetween ((pstr "NavFrame(") <|> (pstr "nav(")) (pchar ')') expr |>> (fun (e) -> NavFrame(e))
