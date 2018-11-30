@@ -18,7 +18,5 @@ let main argv =
 
     if (body <> "Invalid Expression")
     then buildHTML body |> ignore 
-   
-    if body = "Invalid Expression"
-    then printfn "Invalid Expression"
+    else printfn "Invalid Expression"
     0
