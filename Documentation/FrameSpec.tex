@@ -1,0 +1,215 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx, mathtools}
+\usepackage[left=1.35in,top=.8in,right=1.35in,bottom=1in]{geometry}
+\newcommand\q[1][.7cm]{\hspace*{#1}}
+
+\begin{document}
+\setlength\parindent{0pt}
+
+\begin{center}
+{\huge Frame}\\
+\vspace{5px}
+{\large A Language for Rapid Interface Prototyping }\\
+\vspace{5px}
+{\large Eddy Varela \& Taylor Beebe}
+\end{center}
+
+\section{Introduction}
+
+Our programming language addresses the repetitive and tedious nature of writing HTML code by providing a language with simple semantics and grammar rules which allows users to build more with less.  Creating a new webpage from scratch can be extremely time-consuming, causing most smaller web developers to alter pre-existing themes. Larger companies typically hire designers to draft mockups for various interfaces, but this process is slow, expensive, often a luxury for smaller companies.\\
+
+The goal of Frame is to give developers the power of a modern programming language when developing in HTML. The repetitive and verbose nature of HTML makes it challenging to focus on design when developing. Modern programming language features such as variables, looping, and list structures would greatly simplify HTML generation. Our current version of Frame implements many of these useful features, such as variable declaration and reuse, comma-separated lists which compile to individually wrapped expressions, and a simple commenting mechanism. We'l look at some of the benefits of these features in the Examples section.\\
+
+Portability has been another primary goal during the development of Frame. We believe businesses and individuals shouldn't have to worry about how their work will port to various systems and screen dimensions. A universal language like Frame allows fast HTML development across multiple systems and significantly reduces the overhead of developing on multiple platforms.\\
+
+In the future, Frame will be able to output simple and syntactically correct code for many different web-development languages, though it currently only compiles to HTML. Now that a robust parser has been created, the next goal is to create multiple interpreters which can produce Javascript, Swift, and Java code. This lightweight language could provide a universal way of prototyping regardless of screen dimensions or platform. Our language will allow developers to mock up interfaces with less code and in less time than any other language.\\
+
+Our initial version of Frame handles different kinds of text, containers, nested containers, navigation bars, variables, and repetitive structures.
+
+\section{Design Principles}
+
+The fundamental design principle behind Frame is modularity -- we want users to build out components which can be later combined. Frame has been created with readability in mind, so there are many different ways to write a program which outputs the same result. For example, primatives in our language can be expressed in a verbose way (such as Frame(HeadText("Hello")) or using shorter notation (such as fr(ht("Hello")).\\
+
+Frame is designed to be incredibly flexible, meaning we don't do much checking when parsing the input. If the user wants to combine expressions which don't make sense, we see no reason to stop them. As long as the user input compiles to a syntactically correct program, they are free to piece together expressions as they see fit.\\
+
+\section{Examples}
+\begin{center}
+\begin{tabular}{l|l|l} 
+
+\textbf{Example 1} & \textbf{Example 2} & \textbf{Example 3}\\\hline
+ & & \\
+{\underline{sample1.fr contains}} & {\underline{sample2.fr Contains}} & {\underline{sample3.fr Contains}}\\
+
+fr(fr(ht("Hello World"))); & fr(ht("Hello"), ht("World")); & fr(ht("Hello","World"));\\
+ & & \\
+$>$ dotnet run sample1.fr & $>$dotnet run sample2.fr & $>$dotnet run sample3.fr\\
+Success! Check frame.html & Success! Check frame.html & Success! Check frame.html\\
+ & & \\
+\underline{frame.html Contains} & \underline{frame.html contains} & \underline{frame.html contains}\\
+$<$HTML Boilerplate code/$>$ & $<$HTML Boilerplate code/$>$ & $<$HTML Boilerplate code/$>$\\
+... & ... & ...\\
+$<$body$>$ & $<$body$>$ & $<$body$>$\\
+\q$<$div$>$ & \q$<$div$>$ & \q$<$div$>$\\
+\q\q$<$div$>$ & \q\q$<$h1$>$ & \q\q$<$h1$>$\\
+\q\q\q$<$h1$>$ & \q\q\q Hello & \q\q\q Hello\\
+\q\q\q\q Hello World & \q\q$<$/h1$>$ & \q\q$<$/h1$>$\\
+\q\q\q$<$/h1$>$ & \q\q$<$h1$>$ & \q\q$<$h1$>$\\
+\q\q$<$/div$>$ & \q\q\q World & \q\q\q World\\
+\q$<$/div$>$ & \q\q$<$/h1$>$ & \q\q$<$/h1$>$\\
+$<$/body$>$ & \q$<$div$>$ & \q$<$div$>$\\
+& $<$/body$>$ & $<$/body$>$\\
+& &\\
+\textbf{Example 4} & \textbf{Example 5} & \textbf{Example 6}\\\hline
+ & & \\
+{\underline{sample4.fr contains}} & {\underline{sample5.fr Contains}} & {\underline{sample6.fr Contains}}\\
+
+fr( & x = "Fizz"; & //this is a comment\\
+\q bt( & y = "Buzz"; & x = ht("Fizz Buzz");\\
+\q\q "\textbackslash"Fizz Buzz\textbackslash"" & z = fr(pt(x), pt(y)); & fr(\\
+\q ) & z; & \q x //another comment\\
+); & & );\\
+ & & \\
+$>$ dotnet run sample4.fr & $>$dotnet run sample5.fr & $>$dotnet run sample6.fr\\
+Success! Check frame.html & Success! Check frame.html & Success! Check frame.html\\
+ & & \\
+\underline{frame.html Contains} & \underline{frame.html contains} & \underline{frame.html contains}\\
+$<$HTML Boilerplate code/$>$ & $<$HTML Boilerplate code/$>$ & $<$HTML Boilerplate code/$>$\\
+... & ... & ...\\
+$<$body$>$ & $<$body$>$ & $<$body$>$\\
+\q$<$div$>$ & \q$<$div$>$ & \q$<$div$>$\\
+\q\q$<$b$>$ & \q\q$<$p$>$ & \q\q$<$h1$>$\\
+\q\q\q "Fizz Buzz" & \q\q\q Fizz & \q\q\q Fizz Buzz\\
+\q\q $<$/b$>$ & \q\q$<$/p$>$ & \q\q$<$/h1$>$\\
+\q$<$/div$>$ & \q\q$<$p$>$ & \q$<$/div$>$\\
+$<$/body$>$ & \q\q\q Buzz & $<$/body$>$\\
+ & \q\q$<$/p$>$ & \\
+ & \q$<$/div$>$ & \\
+ & $<$/body$>$ & \\
+\end{tabular}
+\end{center}
+\pagebreak
+\subsection{Language Concepts}
+
+Frame's primitives are all strings since HTML is a markup language. We however, built in some intuitive ways to combine different elements of our language which reduce repetition and allows users to write more structured code when developing interfaces. Some of our combining forms allow users to represent lists of information and composition of elements. For example, Frame(Expr) represents a div container holding an expression inside. HeadText(ListString) represents a list of strings wrapped in h1 tags. Similarly we allow users to declare variables for later use. 
+
+\section{Formal Syntax}
+
+\(Expression\) = \\
+$|$ \(EmptyList\) ::= '~'\\
+$|$ \(Digit\) ::= 0$|$1$|$...$|$9 \\
+$|$ \(Number\) ::= Number Digit\\
+$|$ \(Character\) ::= a$|$...$|$z$|$A$|$...$|$Z\\
+$|$ \(Symbols\) ::= $!$ $|$ @ $|$ \# $|$ \$ $|$ \% $|$ \& $|$ * $|$ ( $|$ ) $|$ \_ $|$ + $|$ - $|$ \{ $|$ \} \\
+$|$ \(Quote\) ::= '"' \\
+$|$ \(string\) ::= Number Symbols Characters string\\
+$|$ \(End\) ::= ';'\\
+$|$ \(Equals\) ::= '='\\
+
+\(TextExpression\) = \\
+$|$ \(String\) ::= Quote Number Symbols Character String Quote\\
+$|$ \(StringList\) ::= String, StringList $|$ EmptyList\\
+$|$ \(StringTuple\) ::= String, String\\
+$|$ \(HeadText\) ::= ht(TextExpression | ContainerExpression)End\\
+$|$ \(ParaText\) ::= pt(TextExpression | ContainerExpression)End\\
+$|$ \(BoldText\) ::= bt(TextExpression | ContainerExpression)End\\
+$|$ \(OrderedList\) ::= ol(TextExpression | ContainerExpression)End\\
+$|$ \(Variable\) ::= (TextExpression | ContainerExpression)End\\
+$|$ \(VariableDeclaration\) ::= Character string Equals Variable End\\
+
+\(ContainerExpression\) = \\
+$|$ \(Frame\) ::= fr(TextExpression $|$ ContainerExpression)End\\
+$|$ \(NavFrame\)::= nav(TextExpression $|$ ContainerExpression)End\\
+$|$ \(Intput\)::= in(StringTuple)End\\
+$|$ \(Button\) ::= btn(StringTuple)End\\
+
+Frame does not recognize whitespace, allowing the developer to include as much or little as they like as long as each statement ends in a semicolon. \textbf{Example 6} shows this in use.\\
+
+Users can write comments by typing two consecutive forward-slashes, followed by whatever text they want ignored. \textbf{Example 4} shows this.\\
+
+Users can declare new variables by typing a string beginning with a letter followed by an equal sign and an expression terminated by a semicolon. \textbf{Examples 5} \& \textbf{6} show this.\\
+
+Repetitive components can be shortened by constructing lists of text components wrapped in a single Frame or TextExpression like in \textbf{Examples 2}, \textbf{3}, \& \textbf{5}\\
+
+Users can compose frames inside frames in order to construct complex interfaces. Eventually, we will allow the user to control the head portion of their HTML file, but for now, we have some boilerplate code to make things work. \textbf{Example 1} shows this feature. 
+
+\section{Semantics of the Language}
+
+Here are the types supported in our language as of the publishing of this document.\\
+
+type \(Expr\) = \\
+$|$ \(String\) of string\\
+$|$ \(ParaText\) of Expr\\
+$|$ \(HeadText\) of Expr\\
+$|$ \(ListItem\) of Expr\\
+$|$ \(BoldText\) of Expr\\
+$|$ \(OrderedList\) of Expr\\ 
+$|$ \(LinkText\) of Expr\\
+$|$ \(NavFrame\) of Expr\\
+$|$ \(Button\) of string * string\\
+$|$ \(FofF\) of Expr * Expr\\
+$|$ \(Input\) of string * string\\
+$|$ \(Frame\) of Expr\\
+$|$ \(VariableDeclaration\) of string * Expr\\
+$|$ \(Variable\) of Expr\\
+
+{
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|} 
+
+\hline
+Shorthand Syntax & Abstract Syntax & Type & Meaning \\ \hline
+link(Expr) & LinkText("str") & Expr & assoc. link to text\\ 
+\hline
+fr(Expr) & Frame(Expr) & Expr& $<$div$>$ wrapper \\ 
+\hline
+pt(Expr) & ParaText(String) & Expr & $<$h1$>$ wrapper\\
+\hline
+ht(Expr) & HeadText(String) & Expr & $<$p$>$ wrapper\\
+\hline
+bt(Expr) & BoldText(String) & Expr & $<$b$>$ wrapper\\
+\hline
+li(Expr) & ListItem(String) & Expr & $<$li$>$ wrapper \\
+\hline
+nav(Expr) & NavFrame(String) & Expr & $<$nav$>$ wrapper \\
+\hline
+btn(String,String) & Button(String,String) & String*String & button wrapper \\
+\hline
+ol(String,String,...) & Button(String) & String*Expr & ordered list wrapper \\
+\hline
+in(String, String) & Input(Type,Label) & String*String & input wrapper \\
+\hline
+String = Expr & VariableDeclaration(String,Expr) & String*Expr & Variable declaration\\
+\hline
+String & Variable(Expr) & String & Variable\\
+\hline
+\end{tabular}
+\end{table}
+}
+\section{Remaining Work}
+
+1. We want to implement ordered and unordered lists to work with an elegant solution. For example, fr(ol("foo", "bar", "baz" ,...)); or fr(ul("ufoo","ubar","ubaz"));  compiles to
+
+
+$<$div$>$\\
+\q$<$ol$>$\\
+\q\q$<$li$>$foo$<$/li$>$\\
+\q\q$<$li$>$bar$<$/li$>$\\
+\q\q$<$li$>$baz$<$/li$>$\\
+\q$<$/ol$>$\\
+$<$/div$>$\\
+$<$div$>$\\
+\q$<$ul$>$\\
+\q\q$<$li$>$foo$<$/li$>$\\
+\q\q$<$li$>$bar$<$/li$>$\\
+\q\q$<$li$>$baz$<$/li$>$\\
+\q$<$/ul$>$\\
+$<$/div$>$\\
+
+
+2. We are working on implementing forms. We are building out the software from the bottom up so we have implemented all types of input fields, labels, button, and text. We want to implement validations and locations to where the information is going to post to. Then we want to find an elegant way to layout the parameters for the From expression.\\
+
+3. We want to begin implementing media types such as pictures, videos, music. We think about how many developers reference images from third party sites and how to build out some feature of the language that accounts for that. We can possibly have a media expression with a parameter telling us the type of media, a parameter for the location on the screen, and finally the reference to the media.
+
+\end{document}

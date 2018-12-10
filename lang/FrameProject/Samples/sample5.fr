@@ -1,0 +1,4 @@
+x = "Fizz";
+y = "Buzz";
+z = fr(pt(x), pt(y));
+z;

@@ -1,0 +1,4 @@
+submit = btn("submit","blue" ); //create button
+userin = in("email", "Email Address"); //create email box
+password = in("password", "Password"); //create password box
+fr(userin, password, submit); //put into frame

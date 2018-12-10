@@ -1,0 +1,5 @@
+Frame(
+	Frame("May the"),
+	HeadText("\"force\""),
+	ParaText("be with you")
+);

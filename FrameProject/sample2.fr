@@ -1,1 +1,0 @@
-fr(lst("Dog"),lst("Cat"), lst("Cow"))
